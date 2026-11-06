@@ -50,4 +50,361 @@
         }
         .cassa-box h3 { 
             margin: 0; 
-            font-size
+            font-size: 14px; 
+            text-transform: uppercase; 
+            opacity: 0.9; 
+        }
+        .cassa-box .totale-euro { 
+            font-size: 28px; 
+            font-weight: bold; 
+            margin: 5px 0; 
+            color: #fff; 
+        }
+        .cassa-box .info-consegne { 
+            font-size: 13px; 
+            opacity: 0.95; 
+        }
+
+        label { 
+            font-weight: bold; 
+            margin-top: 12px; 
+            display: block; 
+            color: #ddd; 
+            font-size: 13px; 
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 4px; 
+            margin-bottom: 8px; 
+            border: 1px solid #444; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            background-color: #2b2b2b; 
+            color: #fff; 
+        }
+        input::placeholder { 
+            color: #777; 
+        }
+        
+        .btn-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-top: 15px; 
+        }
+        button { 
+            padding: 14px; 
+            font-size: 15px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        .btn-wa { background-color: #25D366; }
+        .btn-maps { background-color: #ea4335; }
+        .btn-add { background-color: #ff9800; color: #111; }
+        .btn-clear { background-color: #555; font-size: 12px; padding: 8px; margin-top: 10px; }
+
+        /* Lista Storico & Archivio */
+        .storico-section { 
+            margin-top: 25px; 
+            border-top: 1px solid #333; 
+            padding-top: 15px; 
+        }
+        .storico-title { 
+            font-size: 16px; 
+            color: #ffeb3b; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .lista-ordini { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            max-height: 220px; 
+            overflow-y: auto; 
+        }
+        .ordine-item { 
+            background-color: #2a2a2a; 
+            border-left: 4px solid #25D366; 
+            padding: 10px; 
+            border-radius: 6px; 
+            margin-bottom: 8px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 14px; 
+        }
+        .ordine-info { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 2px; 
+        }
+        .ordine-ora { 
+            font-size: 11px; 
+            color: #aaa; 
+        }
+        .ordine-via { 
+            font-weight: bold; 
+            color: #fff; 
+        }
+        .ordine-prezzo { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #25D366; 
+        }
+        .btn-delete { 
+            background: none; 
+            border: none; 
+            color: #ff5252; 
+            cursor: pointer; 
+            font-size: 16px; 
+            padding: 0 5px; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-container">
+            <svg viewBox="0 0 200 200" width="100%" height="100%">
+                <circle cx="100" cy="100" r="100" fill="#222"/>
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#2e7d32" stroke-width="6"/>
+                <path d="M 30,100 A 70,70 0 0,1 170,100" fill="#d32f2f"/>
+                <text x="100" y="85" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="Arial">Da Gennaro</text>
+                <text x="100" y="105" font-size="9" fill="#ffeb3b" text-anchor="middle" font-family="Arial" font-weight="bold">UN NAPOLETANO IN TRASFERTA</text>
+                <path d="M 40,115 Q 100,165 160,115" fill="#ffffff"/>
+                <text x="100" y="135" font-size="10" font-weight="bold" fill="#111" text-anchor="middle" font-family="Arial">PIZZA BARESE E NAPOLETANA</text>
+            </svg>
+        </div>
+        <h1>Pizzeria da Gennaro Express</h1>
+    </div>
+
+    <!-- Cassa della Giornata -->
+    <div class="cassa-box">
+        <h3>Totale Incasso Oggi</h3>
+        <div class="totale-euro" id="totaleEuro">0,00 €</div>
+        <div class="info-consegne"><span id="numConsegne">0</span> Consegne effettuate</div>
+    </div>
+
+    <label for="telefono">Numero di Telefono (Cliente):</label>
+    <input type="tel" id="telefono" placeholder="Es. 3331234567">
+
+    <label for="prezzo">Totale Ordine (€):</label>
+    <input type="number" id="prezzo" step="0.50" placeholder="Es. 11.50">
+
+    <label for="tempo">Tempo di Consegna (minuti):</label>
+    <input type="number" id="tempo" placeholder="Es. 15" value="15">
+
+    <label for="via">Via / Indirizzo (per Maps):</label>
+    <input type="text" id="via" placeholder="Es. Via Roma 15">
+
+    <div class="btn-container">
+        <button class="btn-wa" onclick="inviaWhatsApp()">📱 Invia WhatsApp e Salva</button>
+        <button class="btn-maps" onclick="apriMaps()">🗺️ Apri Google Maps</button>
+        <button class="btn-add" onclick="salvaInStoricoManuale()">➕ Solo Registra Consegna</button>
+    </div>
+
+    <!-- Sezione Storico Odierno -->
+    <div class="storico-section">
+        <div class="storico-title">
+            <span>📜 Storico Consegne Oggi</span>
+        </div>
+        <ul class="lista-ordini" id="listaOrdini"></ul>
+        <button class="btn-clear" onclick="azzeraGiornata()">🗑️ Salva Giornata e Azzera Cassa</button>
+    </div>
+
+    <!-- Sezione Archivio Giornaliero Passato con Ricerca -->
+    <div class="storico-section">
+        <div class="storico-title">
+            <span>📚 Archivio Giornate Passate</span>
+        </div>
+        <input type="text" id="cercaData" placeholder="Cerca data (es. 12/10/2026)..." oninput="filtraArchivio()">
+        <ul class="lista-ordini" id="listaArchivio"></ul>
+    </div>
+
+    <script>
+        let ordini = JSON.parse(localStorage.getItem('consegne_giornata')) || [];
+
+        // Carica dati all'apertura
+        window.onload = function() {
+            aggiornaInterfaccia();
+            aggiornaArchivio();
+        };
+
+        function salvaInStorico(prezzoNum, viaTesto) {
+            const ora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const nuovoOrdine = {
+                id: Date.now(),
+                ora: ora,
+                prezzo: prezzoNum,
+                via: viaTesto || 'Indirizzo non specificato'
+            };
+            ordini.unshift(nuovoOrdine);
+            localStorage.setItem('consegne_giornata', JSON.stringify(ordini));
+            aggiornaInterfaccia();
+        }
+
+        function aggiornaInterfaccia() {
+            const lista = document.getElementById('listaOrdini');
+            lista.innerHTML = '';
+            let totale = 0;
+
+            ordini.forEach(ord => {
+                totale += ord.prezzo;
+                const li = document.createElement('li');
+                li.className = 'ordine-item';
+                li.innerHTML = `
+                    <div class="ordine-info">
+                        <span class="ordine-via">📍 ${ord.via}</span>
+                        <span class="ordine-ora">🕒 ${ord.ora}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="ordine-prezzo">${ord.prezzo.toFixed(2).replace('.', ',')} €</span>
+                        <button class="btn-delete" onclick="eliminaOrdine(${ord.id})">✖</button>
+                    </div>
+                `;
+                lista.appendChild(li);
+            });
+
+            document.getElementById('totaleEuro').innerText = totale.toFixed(2).replace('.', ',') + ' €';
+            document.getElementById('numConsegne').innerText = ordini.length;
+        }
+
+        function inviaWhatsApp() {
+            let telefono = document.getElementById('telefono').value.trim();
+            let prezzo = document.getElementById('prezzo').value.trim();
+            let tempo = document.getElementById('tempo').value.trim();
+            let via = document.getElementById('via').value.trim();
+
+            if (!telefono || !prezzo) {
+                alert("Inserisci il numero di telefono e il prezzo!");
+                return;
+            }
+
+            prezzo = prezzo.replace(',', '.');
+            let prezzoNum = parseFloat(prezzo);
+            let prezzoFormattato = prezzoNum.toFixed(2).replace('.', ',');
+
+            telefono = telefono.replace(/\D/g, '');
+            if (!telefono.startsWith('39') && telefono.length === 10) {
+                telefono = '39' + telefono;
+            }
+
+            salvaInStorico(prezzoNum, via);
+
+            let testo = `Buonasera da Pizzeria da Gennaro! 🍕 Il vostro ordine è in arrivo (tempo stimato: ${tempo} minuti). Il totale è di ${prezzoFormattato}€. Se possibile, vi chiediamo la cortesia di preparare la cifra esatta. Grazie e buona serata (messaggio automatico)`;
+
+            const waUrl = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(testo)}`;
+            window.location.href = waUrl;
+        }
+
+        function salvaInStoricoManuale() {
+            let prezzo = document.getElementById('prezzo').value.trim();
+            let via = document.getElementById('via').value.trim();
+
+            if (!prezzo) {
+                alert("Inserisci il prezzo dell'ordine per registrarlo!");
+                return;
+            }
+
+            prezzo = prezzo.replace(',', '.');
+            salvaInStorico(parseFloat(prezzo), via);
+            
+            document.getElementById('prezzo').value = '';
+            document.getElementById('via').value = '';
+            document.getElementById('telefono').value = '';
+        }
+
+        function apriMaps() {
+            const via = document.getElementById('via').value.trim();
+            if (!via) {
+                alert("Inserisci un indirizzo per aprire Google Maps!");
+                return;
+            }
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(via)}`;
+            window.location.href = mapsUrl;
+        }
+
+        function eliminaOrdine(id) {
+            ordini = ordini.filter(o => o.id !== id);
+            localStorage.setItem('consegne_giornata', JSON.stringify(ordini));
+            aggiornaInterfaccia();
+        }
+
+        function azzeraGiornata() {
+            if (ordini.length === 0) {
+                alert("Nessun ordine da archiviare per oggi.");
+                return;
+            }
+
+            if (confirm("Vuoi archiviare la giornata corrente, azzerare la cassa e ripulire lo storico di oggi?")) {
+                let totaleOggi = ordini.reduce((sum, o) => sum + o.prezzo, 0);
+                let dataOggi = new Date().toLocaleDateString('it-IT');
+                
+                let archivio = JSON.parse(localStorage.getItem('archivio_giornate')) || [];
+                
+                archivio.unshift({
+                    id: Date.now(),
+                    data: dataOggi,
+                    totale: totaleOggi,
+                    numConsegne: ordini.length,
+                    dettaglio: [...ordini]
+                });
+
+                localStorage.setItem('archivio_giornate', JSON.stringify(archivio));
+
+                ordini = [];
+                localStorage.removeItem('consegne_giornata');
+                
+                aggiornaInterfaccia();
+                aggiornaArchivio();
+                alert("Giornata archiviata con successo!");
+            }
+        }
+
+        function aggiornaArchivio(filtro = '') {
+            const listaArchivio = document.getElementById('listaArchivio');
+            listaArchivio.innerHTML = '';
+            let archivio = JSON.parse(localStorage.getItem('archivio_giornate')) || [];
+
+            let archivioFiltrato = archivio.filter(item => item.data.includes(filtro));
+
+            if (archivioFiltrato.length === 0) {
+                listaArchivio.innerHTML = '<li style="text-align:center; color:#777; padding:10px; font-size:13px;">Nessun archivio trovato</li>';
+                return;
+            }
+
+            archivioFiltrato.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'ordine-item';
+                li.style.borderLeftColor = '#ff9800';
+                li.innerHTML = `
+                    <div class="ordine-info">
+                        <span class="ordine-via">📅 ${item.data}</span>
+                        <span class="ordine-ora">${item.numConsegne} consegne effettuate</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="ordine-prezzo" style="color:#ff9800;">${item.totale.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                `;
+                listaArchivio.appendChild(li);
+            });
+        }
+
+        function filtraArchivio() {
+            const query = document.getElementById('cercaData').value.trim();
+            aggiornaArchivio(query);
+        }
+    </script>
+</body>
+</html>
